@@ -1,0 +1,67 @@
+body
+{
+    font-size: 32px;
+    margin: 0px;
+}
+
+.input
+{
+    height: 30px;
+    border-style: ridge;
+    border-color: lightskyblue;
+    border-width: medium;
+    width: 256px;
+    border-radius: 8px;
+}
+
+.select
+{
+    height: 36px;
+    font-size: 24px;
+    border-style: ridge;
+    border-color: lightskyblue;
+    border-width: medium;
+    width: 256px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.error
+{
+    color: #FF0000;
+}
+
+.title-bg
+{
+    width: 100%;
+}
+
+.input_frame
+{
+    margin: 12px;
+}
+
+.upload
+{
+    font-size: 22px;
+}
+
+.submit
+{
+    margin-left: 30px;
+    font-size: 32px;
+}
+
+#status
+{
+    margin-left: 30px;
+    color:red;
+    font-size:86px;
+    margin: 24px;;
+}
+
+.space
+{
+    margin: 0px;
+    font-size: 6px;
+}
