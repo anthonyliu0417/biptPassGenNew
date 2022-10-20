@@ -77,8 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $filePath="";
         if($_FILES["photo"]["name"]!="")//上传了图片，php.ini设置限制上传大小为8m
         {
-            $fileName=$_FILES["photo"]["name"];
-            $filePath=$fileName;
+            $fileName=time()."_".$_FILES["photo"]["name"];
+            $filePath="upload/".$fileName;
             move_uploaded_file($_FILES["photo"]["tmp_name"], $filePath);
         }
         else
@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             {
                 $id=$row['id'];
             }
-            setcookie("ID",$id);//设置cookie
+            setcookie("generateID",$id);//设置cookie
         }
         catch(PDOException $e)
         {
@@ -141,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 }
 
-if(isset($_COOKIE["ID"]))
+if(isset($_COOKIE["generateID"]))
 {
     $servername = "xxxxxx";
     $username = "xxxxxx";
@@ -150,7 +150,7 @@ if(isset($_COOKIE["ID"]))
 
     $genDate="";
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $sqlGetTime="SELECT generate_time FROM generate_info WHERE id=".$_COOKIE["ID"];
+    $sqlGetTime="SELECT generate_time FROM generate_info WHERE id=".$_COOKIE["generateID"];
     $stmt=$conn->prepare($sqlGetTime);
     $stmt->execute();
     while($row=$stmt->fetch())
@@ -184,7 +184,7 @@ if(isset($_COOKIE["ID"]))
         <p>带<span class="error">*</span>的为必填项<br/>如果你的通行页面上带有自己的照片可以上传。<br/>上传照片建议不要超过1M，不然可能不会正确显示<br/>
             默认头像显示学校系统的男生或女生图片<br/>
             <span class='error'>本项目仅供用于学习Web前后端开发技术，<br/>
-            程序源代码已于<a href="https://github.com/"><span style="color:blue;text-decoration:underline;">GitHub</span></a>开源，欢迎互相交流进步，<br/>
+            程序源代码已于<a href="https://github.com/anthonyliu0417/biptPassGenNew"><span style="color:blue;text-decoration:underline;">GitHub</span></a>开源，欢迎互相交流进步，<br/>
             请勿将其用于任何非法用途，否则出现一切问题本站概不负责</span></p>
 
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
@@ -216,17 +216,24 @@ if(isset($_COOKIE["ID"]))
                     <option value="往返两校区和校外住宿报备">往返两校区和校外住宿报备</option>
                     <option value="允许在康庄-主校间通勤">允许在康庄-主校间通勤</option>
                 </select><br/><br/>
-            <input class="submit" type="submit" name="btn" value="提交"/>
+            <input class="submit" type="submit" id="btn" value="提交"/>
         </form>
         <p id='status'></p>
         <p>在使用过程中如果程序出现了bug或者一些其他问题，欢迎您<span style="color:blue;text-decoration:underline;"><a href="https://free-bipt.tk/bug%e6%8f%90%e4%ba%a4%e5%8c%ba/">点击这里</a></span>进行反馈，我在看到后会尽快进行处理，谢谢~</p>
     </div>
 
     <script type='text/javascript'>
-    document.getElementsByClassName("submit")[0].onclick=function()
-    {
-        document.getElementById("status").innerHTML="正在处理中，请稍后...";
-    }
+        var submited=false;
+        document.getElementById("btn").onclick=function()
+        {
+            document.getElementById("status").innerHTML="正在处理中，请稍后...";
+            if(submited==true)
+            {
+                document.getElementById("btn").disabled = 'true';
+                document.getElementById("status").innerHTML="提交过了，处理中，网慢别着急...";
+            }
+            submited=true;
+        }
     </script>
 
 </body>
